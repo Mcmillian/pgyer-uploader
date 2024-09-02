@@ -1,5 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '2.0.10'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
 }
 
 group = 'org.linghuchong'
@@ -11,7 +13,50 @@ repositories {
 
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation(gradleApi())
+    implementation(localGroovy())
 }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'pgyer'
+            from components.java
+        }
+        /*register("mavenJava") {
+            from(components["java"])
+
+            groupId = 'org.linghuchong'
+            artifactId = "pgyer-uploader"  // 替换为你的插件名称
+            version = "1.0.0"  // 插件的版本号
+
+            pom {
+                name.set("Pgyer Uploader")
+                description.set("upload apk to pgyer.")
+                url.set("https://github.com/Mcmillian/pgyer-uploader")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/Mcmillian/pgyer-uploader.git")
+                    developerConnection.set("scm:git:ssh://github.com:Mcmillian/pgyer-uploader.git")
+                    url.set("https://github.com/Mcmillian/pgyer-uploader")
+                }
+            }
+        }*/
+    }
+    repositories {
+        maven {
+            // 生成的插件位置
+            url = uri('../repo')
+        }
+    }
+}
+
 
 test {
     useJUnitPlatform()
